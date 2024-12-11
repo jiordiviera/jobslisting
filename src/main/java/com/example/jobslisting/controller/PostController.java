@@ -2,8 +2,8 @@ package com.example.jobslisting.controller;
 
 import com.example.jobslisting.model.Post;
 import com.example.jobslisting.repository.PostRepository;
+import com.example.jobslisting.repository.SearchRepositoryImpl;
 import org.springframework.web.bind.annotation.*;
-//import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -13,8 +13,12 @@ public class PostController {
     final
     PostRepository postRepository;
 
-    public PostController(PostRepository postRepository) {
+    final
+    SearchRepositoryImpl searchRepository;
+
+    public PostController(PostRepository postRepository, SearchRepositoryImpl searchRepository) {
         this.postRepository = postRepository;
+        this.searchRepository = searchRepository;
     }
 
     //    @ApiIgnore
@@ -29,9 +33,9 @@ public class PostController {
         return postRepository.findAll();
     }
 
-    @GetMapping("/posts/{text}")
+    @GetMapping("/post/{text}")
     public List<Post> search(@PathVariable String text) {
-return postRepository.findAll();
+        return searchRepository.findByText(text);
     }
 
     @PostMapping("/post")
